@@ -85,7 +85,8 @@ def apply():
     __opts__['file_roots'] = {'base': [file_root]}
     caller = salt.client.Caller(mopts=__opts__)
     ret = caller.cmd('state.apply', 'default', test=False)
-    print(ret)
+    from pprint import pprint
+    pprint(ret)
     branch = get_branch()
     local, remote = get_commit(branch)
     # open(".latest-commit", "w").write(remote)
