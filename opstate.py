@@ -79,7 +79,7 @@ def pull():
 def apply():
     os.environ['SALT_FILE_ROOT'] = './'
     caller = salt.client.Caller(mopts={'file_client': 'local'})
-    ret = caller.cmd('state.apply', 'default', test=True)
+    ret = caller.cmd('state.apply', 'default', test=False)
     print(ret)
     branch = get_branch()
     local, remote = get_commit(branch)
