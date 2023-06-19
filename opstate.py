@@ -81,6 +81,7 @@ def apply():
     os.environ['SALT_FILE_ROOT'] = str(Path(__file__).parent.absolute())
     __opts__ = salt.config.minion_config('/etc/salt/minion')
     __opts__['file_client'] = 'local'
+    print(__opts__)
     caller = salt.client.Caller(mopts=__opts__)
     ret = caller.cmd('state.apply', 'default', test=False)
     print(ret)
@@ -107,6 +108,7 @@ def main():
         print(f"\rapply changes ... continue now   ")
         #run(["git", "pull", "--rebase=true"])
         print("restarting")
+        print(">>>", '/usr/bin/sudo', "-S", sys.executable, __file__, 'apply')
         os.execl('/usr/bin/sudo', "-S", sys.executable, __file__, 'apply')
     elif retcode == 0:
         print("Nothing to do!")
