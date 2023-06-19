@@ -81,6 +81,9 @@ def apply():
     caller = salt.client.Caller(mopts={'file_client': 'local'})
     ret = caller.cmd('state.apply', 'default', test=True)
     print(ret)
+    branch = get_branch()
+    local, remote = get_commit(branch)
+    open(".latest-commit", "w").write(remote)
 
 
 def main():
@@ -101,9 +104,6 @@ def main():
         print(f"\rapply changes ... continue now   ")
         run(["git", "pull", "--rebase=true"])
         print("restarting")
-        branch = get_branch()
-        local, remote = get_commit(branch)
-        open(".latest-commit", "w").write(remote)
         os.execl(sys.executable, sys.executable, 'apply')
     elif retcode == 0:
         print("Nothing to do!")
