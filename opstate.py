@@ -2,7 +2,7 @@ import sys
 import subprocess
 import os
 from pathlib import Path
-from update import run
+from update import run, get_commit, get_branch
 import time
 
 
@@ -26,7 +26,10 @@ if retcode == 1:
         seconds -= 1
     print(f"\rpull changes and refresh ... continue now   ")
     run(["git", "pull"])
-    print("restarting")
+    print("restarting\n")
+    branch = get_branch()
+    local, remote = get_commit(branch)
+    open(".latest-commit", "w").write(remote)
     os.execl(sys.executable, sys.executable, *sys.argv)
 elif retcode == 0:
     print("Nothing to do!")

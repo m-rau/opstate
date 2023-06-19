@@ -1,7 +1,7 @@
 import os
 import subprocess
 import re
-from typing import List
+from typing import List, Tuple
 import sys
 
 REMOTE = "origin"
@@ -13,9 +13,22 @@ def run(command: List[str]) -> str:
     return stdout.strip()
 
 
+def get_branch() -> str:
+    return run(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+
+
+def get_commit(branch: str) -> Tuple[str, str]:
+    remote = run(["git", "rev-parse", branch])
+    if os.path.exists(".latest-commit"):
+        local = open(".latest-commit", "r").read().strip()
+    else:
+        local = None
+    return local, remote
+
+
 def main():
     print(f"check updates for opstate with remote \"{REMOTE}\"")
-    branch = run(["git", "rev-parse", "--abbrev-ref", "HEAD"])
+    branch = get_branch()
     print("  * local branch:", branch)
     print("  * fetch update: ", end="")
     if run(["git", "fetch", REMOTE]):
@@ -56,11 +69,7 @@ def main():
         print("  * no changes found, skip pulling!")
 
     print(f"verify local vs. remote commit in {REMOTE}/{branch}")
-    remote = run(["git", "rev-parse", branch])
-    if os.path.exists(".latest-commit"):
-        local = open(".latest-commit", "r").read().strip()
-    else:
-        local = None
+    local, remote = get_commit(branch)
     print("  * local commit hash:", local)
     print("  * remote commit hash:", remote)
 
