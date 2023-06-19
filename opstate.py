@@ -76,16 +76,24 @@ def pull():
         sys.exit(0)
 
 
-def apply():
-    print(">>>", sys.argv)
+def apply_state(name: str):
     file_root = str(Path(__file__).parent.absolute())
     os.environ['SALT_FILE_ROOT'] = file_root
     __opts__ = salt.config.minion_config('/etc/salt/minion')
     __opts__['file_client'] = 'local'
     __opts__['file_roots'] = {'base': [file_root]}
     caller = salt.client.Caller(mopts=__opts__)
-    ret = caller.cmd('state.apply', 'default', test=False)
+    ret = caller.cmd('state.apply', name, test=False)
+    return ret
+
+
+def apply():
     from pprint import pprint
+    ret = apply_state('default')
+    pprint(ret)
+    ret = apply_state('software.pycharm')
+    pprint(ret)
+    ret = apply_state('software.chromium')
     pprint(ret)
     branch = get_branch()
     local, remote = get_commit(branch)
