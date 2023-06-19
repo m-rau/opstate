@@ -6,6 +6,8 @@ import subprocess
 import re
 from typing import List, Tuple
 import sys
+import salt.client
+
 
 # name of git remote
 REMOTE = "origin"
@@ -74,6 +76,13 @@ def pull():
         sys.exit(0)
 
 
+def apply():
+    os.environ['SALT_FILE_ROOT'] = './'
+    caller = salt.client.Caller(mopts={'file_client': 'local'})
+    ret = caller.cmd('state.apply', 'default', test=True)
+    print(ret)
+
+
 def main():
     retcode = subprocess.Popen([sys.executable, 'opstate.py', 'pull']).wait()
     print()
@@ -95,7 +104,7 @@ def main():
         branch = get_branch()
         local, remote = get_commit(branch)
         open(".latest-commit", "w").write(remote)
-        os.execl(sys.executable, sys.executable, *sys.argv)
+        os.execl(sys.executable, sys.executable, 'apply')
     elif retcode == 0:
         print("Nothing to do!")
     print("Exiting.\n")
@@ -108,5 +117,7 @@ if __name__ == "__main__":
         main()
     elif sys.argv[1].lower().strip() == "pull":
         pull()
+    elif sys.argv[1].lower().strip() == "apply":
+        apply()
     else:
         print("help")
