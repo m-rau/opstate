@@ -52,4 +52,4 @@ if (behind and (not ahead) and (not dirty)):
 
 if local != remote:
     print("deploy!!!")
-    open(".latest-commit", "w").write(remote)
+    #open(".latest-commit", "w").write(remote)
