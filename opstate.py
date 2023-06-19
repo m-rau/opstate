@@ -76,16 +76,21 @@ def pull():
 
 def main():
     retcode = subprocess.Popen([sys.executable, 'opstate.py', 'pull']).wait()
+    print()
     if retcode == 1:
         seconds = 5
-        while seconds > 0:
-            print("\r", end="")
-            print(f"pull changes and refresh ... continue in {seconds}s",
-                  flush=True, end="")
-            time.sleep(1)
-            seconds -= 1
+        try:
+            while seconds > 0:
+                print("\r", end="")
+                print(f"pull changes and refresh ... continue in {seconds}s",
+                      flush=True, end="")
+                time.sleep(1)
+                seconds -= 1
+        except KeyboardInterrupt:
+            print("\nAborting.")
+            sys.exit(2)
         print(f"\rpull changes and refresh ... continue now   ")
-        run(["git", "pull"])
+        run(["git", "pull", "--rebase=true"])
         print("restarting\n")
         branch = get_branch()
         local, remote = get_commit(branch)
