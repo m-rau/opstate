@@ -7,7 +7,7 @@ import re
 from typing import List, Tuple
 import sys
 import salt.client
-
+import salt.config
 
 # name of git remote
 REMOTE = "origin"
@@ -78,8 +78,10 @@ def pull():
 
 def apply():
     print(">>>", sys.argv)
-    # os.environ['SALT_FILE_ROOT'] = './'
-    caller = salt.client.Caller() #mopts={'file_client': 'local'})
+    os.environ['SALT_FILE_ROOT'] = './'
+    __opts__ = salt.config.minion_config('/etc/salt/minion')
+    __opts__['file_client'] = 'local'
+    caller = salt.client.Caller(mopts=__opts__)
     ret = caller.cmd('state.apply', 'default', test=False)
     print(ret)
     branch = get_branch()
@@ -103,7 +105,7 @@ def main():
             print("\nAborting.")
             sys.exit(2)
         print(f"\rapply changes ... continue now   ")
-        run(["git", "pull", "--rebase=true"])
+        #run(["git", "pull", "--rebase=true"])
         print("restarting")
         os.execl('/usr/bin/sudo', "-S", sys.executable, __file__, 'apply')
     elif retcode == 0:
