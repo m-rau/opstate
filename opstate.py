@@ -104,7 +104,8 @@ def main():
         print(f"\rapply changes ... continue now   ")
         run(["git", "pull", "--rebase=true"])
         print("restarting")
-        os.execl('sudo', sys.executable, __file__, 'apply')
+        os.execl('/usr/bin/sudo', sys.executable, sys.executable, __file__,
+                 'apply')
     elif retcode == 0:
         print("Nothing to do!")
     print("Exiting.\n")
