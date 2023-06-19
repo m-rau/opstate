@@ -29,7 +29,7 @@ pycharm_install:
         [Desktop Entry]
         Version=1.0
         Type=Application
-        Name=PyCharm Community Edition
+        Name=PyCharm Community Edition 123
         Icon=/opt/pycharm/latest/bin/pycharm.svg
         Exec="/opt/pycharm/latest/bin/pycharm.sh" %f
         Comment=Python IDE for Professional Developers
