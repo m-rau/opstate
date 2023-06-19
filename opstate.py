@@ -86,7 +86,7 @@ def apply():
     print(ret)
     branch = get_branch()
     local, remote = get_commit(branch)
-    open(".latest-commit", "w").write(remote)
+    # open(".latest-commit", "w").write(remote)
 
 
 def main():
