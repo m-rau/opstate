@@ -67,7 +67,7 @@ def pull():
     print(f"\nverify local vs. remote commit of {REMOTE}/{branch}")
     local, remote = get_commit(branch)
     if local != remote:
-        print("  * commits differs, update required!")
+        print("  * commits differ, update required!")
         sys.exit(1)
     else:
         print("  * commits are identical, skip update!")
