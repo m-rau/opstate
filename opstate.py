@@ -90,7 +90,7 @@ def main():
     retcode = subprocess.Popen([sys.executable, 'opstate.py', 'pull']).wait()
     print()
     if retcode == 1:
-        seconds = 5
+        seconds = 3
         try:
             while seconds > 0:
                 print("\r", end="")
