@@ -91,13 +91,13 @@ def main():
             sys.exit(2)
         print(f"\rpull changes and refresh ... continue now   ")
         run(["git", "pull", "--rebase=true"])
-        print("restarting\n")
+        print("restarting")
         branch = get_branch()
         local, remote = get_commit(branch)
         open(".latest-commit", "w").write(remote)
         os.execl(sys.executable, sys.executable, *sys.argv)
     elif retcode == 0:
-        print("\nNothing to do!")
+        print("Nothing to do!")
     print("Exiting.\n")
 
 
