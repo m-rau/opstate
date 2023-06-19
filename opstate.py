@@ -83,7 +83,6 @@ def apply():
     __opts__ = salt.config.minion_config('/etc/salt/minion')
     __opts__['file_client'] = 'local'
     __opts__['file_roots'] = {'base': [file_root]}
-    print(__opts__)
     caller = salt.client.Caller(mopts=__opts__)
     ret = caller.cmd('state.apply', 'default', test=False)
     print(ret)
