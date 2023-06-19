@@ -16,7 +16,7 @@ def run(command: List[str]) -> str:
 
 branch = run(["git", "rev-parse", "--abbrev-ref", "HEAD"])
 print("branch:", branch)
-if run(["git", "fetch"]):
+if run(["git", "fetch", "origin"]):
     print("fetch: yes")
 else:
     print("fetch: no")
@@ -33,7 +33,23 @@ if not dirty:
 else:
     print("worktree:", "dirty")
 
+remote = run(["git", "rev-parse", branch])
+if os.path.exists(".latest-commit"):
+    local = open(".latest-commit", "r").read().strip()
+else:
+    local = None
+
+print("local:", local)
+print("remote:", remote)
+
 if (behind and (not ahead) and (not dirty)):
-    print("pull changes")
     log = run(["git", "log", "--oneline", "HEAD..origin"])
     print(f"log:\n{log}")
+    print("pull changes")
+    input("continue?")
+    log = run(["git", "pull", "origin"])
+    print("pull result:", log)
+
+if local != remote:
+    print("deploy!!!")
+    open(".latest-commit", "w").write(remote)
