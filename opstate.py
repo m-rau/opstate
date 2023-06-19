@@ -77,7 +77,7 @@ def pull():
 
 
 def apply():
-    os.environ['SALT_FILE_ROOT'] = './'
+    #os.environ['SALT_FILE_ROOT'] = './'
     caller = salt.client.Caller(mopts={'file_client': 'local'})
     ret = caller.cmd('state.apply', 'default', test=False)
     print(ret)
