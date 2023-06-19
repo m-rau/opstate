@@ -27,11 +27,13 @@ diff = run(["git", "rev-list", "--left-right", "--count",
 print("behind:", behind)
 print("ahead:", ahead)
 
-clean = run(["git", "status", "--porcelain"])
-if not clean:
+dirty = run(["git", "status", "--porcelain"])
+if not dirty:
     print("worktree:", "clean")
 else:
-    print("worktree:", "not clean")
+    print("worktree:", "dirty")
 
-if (behind and not ahead and clean):
+if (behind and (not ahead) and (not dirty)):
     print("pull changes")
+    log = run(["git", "log", "--oneline", "HEAD..origin"])
+    print(f"log:\n{log}")
