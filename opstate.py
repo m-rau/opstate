@@ -78,7 +78,7 @@ def pull():
 
 def apply():
     print(">>>", sys.argv)
-    os.environ['SALT_FILE_ROOT'] = Path(__file__).parent.absolute()
+    os.environ['SALT_FILE_ROOT'] = str(Path(__file__).parent.absolute())
     __opts__ = salt.config.minion_config('/etc/salt/minion')
     __opts__['file_client'] = 'local'
     caller = salt.client.Caller(mopts=__opts__)
