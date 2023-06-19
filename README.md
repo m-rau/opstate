@@ -1,7 +1,2 @@
 Welcome to opstate
 ==================
-
-
-
-
-
