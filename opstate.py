@@ -47,7 +47,7 @@ def pull():
     if ahead:
         print(f"  * ahead: {ahead} commit{'s' if ahead > 1 else ''}")
     dirty = run(["git", "status", "--porcelain"])
-    print(f"  * local worktree: {'clean' if dirty else 'dirty'}")
+    print(f"  * local worktree: {'clean' if dirty == '' else 'dirty'}")
     print(f"\nidentify changes of {REMOTE}/{branch}")
     if behind:
         if not dirty:
@@ -82,14 +82,14 @@ def main():
         try:
             while seconds > 0:
                 print("\r", end="")
-                print(f"pull changes and refresh ... continue in {seconds}s",
+                print(f"apply changes ... continue in {seconds}s",
                       flush=True, end="")
                 time.sleep(1)
                 seconds -= 1
         except KeyboardInterrupt:
             print("\nAborting.")
             sys.exit(2)
-        print(f"\rpull changes and refresh ... continue now   ")
+        print(f"\rapply changes ... continue now   ")
         run(["git", "pull", "--rebase=true"])
         print("restarting")
         branch = get_branch()
